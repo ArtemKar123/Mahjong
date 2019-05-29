@@ -3,8 +3,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
     android:layout_height="match_parent">
     <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -12,11 +12,26 @@
             android:scaleType="centerInside"
             android:background="@drawable/back5" />
         <TextView
+            android:id="@+id/text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/colorText2"
-            android:text="@string/lorem"
+            android:textColor="@color/colorButton"
+            android:text="@string/info"
+            android:paddingLeft="15dp"
+            android:paddingTop="15dp"
             />
+        <Button
+            android:id="@+id/button"
+            android:background="@drawable/button_shaped"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/text"
+            android:layout_centerHorizontal="true"
+            android:translationY="15dp"
+            android:text="Начать"
+            android:onClick="onClick"/>
+
     </RelativeLayout>
+
 
 </android.support.constraint.ConstraintLayout>

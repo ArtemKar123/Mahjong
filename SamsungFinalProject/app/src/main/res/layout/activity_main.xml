@@ -24,7 +24,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/text"
             android:layout_centerHorizontal="true"
-            android:translationY="1dp"
+            android:translationY="5dp"
             android:text="Make a photo"
             android:onClick="onClick"/>
         <TextView
@@ -33,9 +33,10 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_below="@id/imageView"
-            android:textColor="@color/colorText2"
+            android:textColor="@color/colorButton"
             android:translationY="1dp"
-            android:text=""/>
+            android:padding="5dp"
+            android:text="Чтобы начать, нажмите на кнопку ниже и сделайте фото"/>
         <ImageView
             android:id="@+id/imageView"
             android:layout_width="wrap_content"

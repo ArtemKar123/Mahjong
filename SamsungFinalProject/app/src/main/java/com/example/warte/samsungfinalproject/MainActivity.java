@@ -35,6 +35,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.Iterator;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -60,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onClick(View view) {
+        text.setText("");
         view.startAnimation(animAlpha);
         dispatchTakePictureIntent();
     }
@@ -238,7 +240,7 @@ public class MainActivity extends AppCompatActivity {
             if (targetFile != null) {
                 imageView.setImageURI(Uri.parse(targetFile.getAbsolutePath()));
                 Tiles a = new Tiles(tiles);
-                text.setText(a.toString());
+                text.setText("You have following combinations:\n" + a.toString());
             }
         }
     }
@@ -363,7 +365,15 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public String toString(){
-            return Arrays.toString(combinations.toArray());
+            String a = " ";
+            Iterator<String> iterator = combinations.iterator();
+            while (iterator.hasNext()) {
+                if (a.equals(" "))
+                    a = a.concat(iterator.next());
+                else
+                    a = a.concat(", " + iterator.next());
+            }
+            return a;
         }
     }
 }

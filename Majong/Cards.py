@@ -214,7 +214,7 @@ def draw_results(image, qTile):
     name = qTile.best_match
 
     # Draw card name twice, so letters have black outlines
-    cv2.putText(image,(name),(x-60,y-10),font,5,(0,0,0),15,10)
+    cv2.putText(image,(name),(x-60,y-10),font,5,(0,225,225),15,10)
     #cv2.putText(image,(name'),(x-60,y-10),font,1,(50,200,200),2,cv2.LINE_AA)
 
 
