@@ -7,7 +7,6 @@ import android.view.View;
 import android.webkit.WebView;
 
 public class InfoActivity extends AppCompatActivity {
-    WebView webView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

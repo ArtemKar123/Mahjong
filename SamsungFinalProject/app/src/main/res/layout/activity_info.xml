@@ -29,6 +29,8 @@
             android:layout_centerHorizontal="true"
             android:translationY="15dp"
             android:text="Начать"
+            android:textColor="@color/colorText3"
+
             android:onClick="onClick"/>
 
     </RelativeLayout>

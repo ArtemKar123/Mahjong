@@ -1,11 +1,10 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import json
-import CardDetector
+import TileDetector
 import io
 from PIL import Image
 
 HOST = '192.168.1.5'
-#HOST = '172.20.10.10'
 PORT = 8080
 FILE_PREFIX = '.'
 class JSONRequestHandler(BaseHTTPRequestHandler):
@@ -29,7 +28,6 @@ class JSONRequestHandler(BaseHTTPRequestHandler):
             self.wfile.write(bytes(tile[i] + ',', 'utf-8'))
         self.wfile.write(bytes('&', 'utf-8'))
         img = Image.open('found.jpg')
-        #img = Image.open('TestImage1.jpg')
         imgByteArr = io.BytesIO()
         img.save(imgByteArr, format = 'JPEG')
         imgByteArr = imgByteArr.getvalue()

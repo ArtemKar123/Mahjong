@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onClick(View view) {
-        text.setText("");
+        text.setText("Подождите, ваше фото обрабатывается");
         view.startAnimation(animAlpha);
         dispatchTakePictureIntent();
     }
@@ -132,7 +132,6 @@ public class MainActivity extends AppCompatActivity {
             super.onPreExecute();
             Log.d("myTag", "2");
             String myURL = "http://192.168.1.5:8080";
-            //String myURL = "http://172.20.10.10:8080";
             try {
                 connectURL = new URL(myURL);
             } catch (MalformedURLException e) {
@@ -175,11 +174,6 @@ public class MainActivity extends AppCompatActivity {
                 DataOutputStream dos = new DataOutputStream(conn.getOutputStream());
 
                 Log.d("myTag123","2");
-
-                //dos.writeBytes("Content-Disposition: form-data; name=\"uploadedfile\";filename=\"" + iFileName +"\"" + lineEnd);
-                //dos.writeBytes(lineEnd);
-
-
 
                 // create a buffer of maximum size
                 int bytesAvailable = fileInputStream.available();
@@ -240,7 +234,7 @@ public class MainActivity extends AppCompatActivity {
             if (targetFile != null) {
                 imageView.setImageURI(Uri.parse(targetFile.getAbsolutePath()));
                 Tiles a = new Tiles(tiles);
-                text.setText("You have following combinations:\n" + a.toString());
+                text.setText("У вас есть следующие комбинации:\n" + a.toString());
             }
         }
     }
@@ -252,6 +246,8 @@ public class MainActivity extends AppCompatActivity {
         ArrayList<Integer> dragons;
         ArrayList[] suits;
         Integer cur;
+        boolean drags;
+        boolean windsB;
         int c;
         HashSet<String> combinations = new HashSet<>();
         public Tiles(String[] tiles){
@@ -309,9 +305,52 @@ public class MainActivity extends AppCompatActivity {
 
         }
         public void findPons(String suit, Object[] a){
+            switch (suit){
+                case "mans":
+                    suit = "Ман";
+                    break;
+                case "pins":
+                    suit = "Пин";
+                    break;
+                case "sous":
+                    suit = "Соу";
+                    break;
+                case "dragons":
+                    drags = true;
+                    break;
+            }
             for (int i = 0; i < a.length; i++) {
                 c = 1;
                 cur = (Integer) a[i];
+                if (drags) {
+                    switch ((Integer) a[i]) {
+                        case 1:
+                            a[i] = "белых драконов";
+                            break;
+                        case 2:
+                            a[i] = "красных драконов";
+                            break;
+                        case 3:
+                            a[i] = "зеленых драконов";
+                            break;
+                    }
+                }
+                if (windsB){
+                    switch ((Integer) a[i]) {
+                        case 1:
+                            a[i] = "северных ветров";
+                            break;
+                        case 2:
+                            a[i] = "южных ветров";
+                            break;
+                        case 3:
+                            a[i] = "западных ветров";
+                            break;
+                        case 4:
+                            a[i] = "восточных ветров";
+                            break;
+                    }
+                }
                 for (int j = 0; j < a.length; j++) {
                     if (j == i){
                         continue;
@@ -321,12 +360,26 @@ public class MainActivity extends AppCompatActivity {
                     }
                     if (c == 3){
                         c = 1;
-                        combinations.add("Pon of " + a[i] + " " + suit);
+                        if (drags || windsB)
+                            combinations.add("Пон из " + a[i]);
+                        else
+                            combinations.add("Пон из " + a[i] + " " + suit);
                     }
                 }
             }
         }
         public void findChis(String suit, Object[] a){
+            switch (suit){
+                case "mans":
+                    suit = "Ман";
+                    break;
+                case "pins":
+                    suit = "Пин";
+                    break;
+                case "sous":
+                    suit = "Соу";
+                    break;
+            }
             for (int i = 0; i < a.length; i++) {
                 c = 1;
                 cur = (Integer) a[i];
@@ -339,12 +392,23 @@ public class MainActivity extends AppCompatActivity {
                     }
                     if (c == 3){
                         c = 1;
-                        combinations.add("Chi of " + a[i] + "," + ((Integer)a[i] + 1) + "," + ((Integer)a[i] + 2) + " " + suit);
+                        combinations.add("Чи из " + a[i] + "," + ((Integer)a[i] + 1) + "," + ((Integer)a[i] + 2) + " " + suit);
                     }
                 }
             }
         }
         public void findKans(String suit, Object[] a){
+            switch (suit){
+                case "mans":
+                    suit = "Ман";
+                    break;
+                case "pins":
+                    suit = "Пин";
+                    break;
+                case "sous":
+                    suit = "Соу";
+                    break;
+            }
             for (int i = 0; i < a.length; i++) {
                 c = 1;
                 cur = (Integer) a[i];
@@ -357,7 +421,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                     if (c == 4){
                         c = 1;
-                        combinations.add("Kan of " + a[i] + " " + suit);
+                        combinations.add("Кан из " + a[i] + " " + suit);
                     }
                 }
             }
@@ -371,7 +435,7 @@ public class MainActivity extends AppCompatActivity {
                 if (a.equals(" "))
                     a = a.concat(iterator.next());
                 else
-                    a = a.concat(", " + iterator.next());
+                    a = a.concat(";\n" + iterator.next());
             }
             return a;
         }
