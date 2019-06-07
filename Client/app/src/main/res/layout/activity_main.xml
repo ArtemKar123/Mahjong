@@ -29,11 +29,21 @@
             android:textColor="@color/colorText3"
             android:onClick="onClick"/>
         <TextView
-            android:id="@+id/text"
+            android:id="@+id/text1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_below="@id/imageView"
+            android:textColor="@color/colorButton"
+            android:translationY="1dp"
+            android:padding="5dp"
+            android:text=""/>
+        <TextView
+            android:id="@+id/text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/text1"
             android:textColor="@color/colorButton"
             android:translationY="1dp"
             android:padding="5dp"

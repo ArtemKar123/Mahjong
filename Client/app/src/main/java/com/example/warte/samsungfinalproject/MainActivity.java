@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.StrictMode;
 import android.provider.MediaStore;
 import android.service.quicksettings.Tile;
 import android.support.v4.content.FileProvider;
@@ -33,6 +34,7 @@ import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -45,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
     private Uri photoURI;
     protected File file;
     protected String[] tiles;
-    protected TextView text;
+    protected TextView text, text2;
     Animation animAlpha;
 
     @Override
@@ -54,8 +56,15 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        if (android.os.Build.VERSION.SDK_INT > 9)
+        {
+            StrictMode.ThreadPolicy policy = new
+                    StrictMode.ThreadPolicy.Builder().permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+        }
 
         text = findViewById(R.id.text);
+        text2 = findViewById(R.id.text1);
         imageView = findViewById(R.id.imageView);
         imageView.setImageDrawable(getDrawable(R.drawable.img));
     }
@@ -131,7 +140,7 @@ public class MainActivity extends AppCompatActivity {
         protected void onPreExecute() {
             super.onPreExecute();
             Log.d("myTag", "2");
-            String myURL = "http://192.168.1.5:8080";
+            String myURL = "http://192.168.1.4:8080";
             try {
                 connectURL = new URL(myURL);
             } catch (MalformedURLException e) {
@@ -234,11 +243,15 @@ public class MainActivity extends AppCompatActivity {
             if (targetFile != null) {
                 imageView.setImageURI(Uri.parse(targetFile.getAbsolutePath()));
                 Tiles a = new Tiles(tiles);
+                String txt = "";
+                for (int i = 0; i < tiles.length; i++) {
+                    txt = txt + ", " + tiles[i];
+                }
+                text2.setText("У вас есть следущие тайлы:\n" + txt);
                 text.setText("У вас есть следующие комбинации:\n" + a.toString());
             }
         }
-    }
-    class Tiles {
+    }class Tiles {
         ArrayList<Integer> mans;
         ArrayList<Integer> pins;
         ArrayList<Integer> sous;
@@ -287,6 +300,17 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         public void findCombinations() {
+            Comparator comparator = new Comparator<Integer>() {
+                @Override
+                public int compare(Integer o1, Integer o2) {
+                    if (o1 > o2)
+                        return 1;
+                    else return -1;
+                }
+            };
+            pins.sort(comparator);
+            mans.sort(comparator);
+            sous.sort(comparator);
             findPons("mans",mans.toArray());
             findPons("pins",pins.toArray());
             findPons("sous",sous.toArray());
@@ -429,10 +453,10 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public String toString(){
-            String a = " ";
+            String a = "";
             Iterator<String> iterator = combinations.iterator();
             while (iterator.hasNext()) {
-                if (a.equals(" "))
+                if (a.equals(""))
                     a = a.concat(iterator.next());
                 else
                     a = a.concat(";\n" + iterator.next());

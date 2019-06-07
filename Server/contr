@@ -1,0 +1,12 @@
+import os
+#this script generates train data names array
+pdir = path = os.path.dirname(os.path.abspath(__file__)) + '/new/'
+contdir = []
+#print(pdir)
+a = ''
+for i in os.walk(pdir):
+    a = a + str(i)
+a = a.replace('.jpg', '')
+a = a.replace('[', '')
+a = a.replace(']', '')
+print(a)
