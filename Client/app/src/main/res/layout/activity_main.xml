@@ -37,17 +37,19 @@
             android:textColor="@color/colorButton"
             android:translationY="1dp"
             android:padding="5dp"
-            android:text=""/>
+            android:textSize="18dp"
+            android:text="Чтобы начать, нажмите на кнопку ниже и сделайте фото"/>
         <TextView
             android:id="@+id/text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
+            android:layout_centerHorizontal="false"
             android:layout_below="@id/text1"
             android:textColor="@color/colorButton"
             android:translationY="1dp"
             android:padding="5dp"
-            android:text="Чтобы начать, нажмите на кнопку ниже и сделайте фото"/>
+            android:textSize="18dp"
+            android:text=""/>
         <ImageView
             android:id="@+id/imageView"
             android:layout_width="wrap_content"

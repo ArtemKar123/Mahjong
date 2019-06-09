@@ -3,6 +3,7 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.StrictMode;
@@ -14,6 +15,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -47,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
     private Uri photoURI;
     protected File file;
     protected String[] tiles;
+    Button button;
     protected TextView text, text2;
     Animation animAlpha;
 
@@ -62,15 +65,17 @@ public class MainActivity extends AppCompatActivity {
                     StrictMode.ThreadPolicy.Builder().permitAll().build();
             StrictMode.setThreadPolicy(policy);
         }
-
-        text = findViewById(R.id.text);
-        text2 = findViewById(R.id.text1);
+        button = findViewById(R.id.button);
+        text = findViewById(R.id.text1);
+        text2 = findViewById(R.id.text);
         imageView = findViewById(R.id.imageView);
         imageView.setImageDrawable(getDrawable(R.drawable.img));
     }
 
     public void onClick(View view) {
-        text.setText("Подождите, ваше фото обрабатывается");
+        text.setText("");
+        text2.setText("");
+        button.setEnabled(false);
         view.startAnimation(animAlpha);
         dispatchTakePictureIntent();
     }
@@ -80,6 +85,8 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == REQUEST_TAKE_PHOTO && resultCode == RESULT_OK) {
+
+            text.setText("Подождите, ваше фото обрабатывается");
             imageView.setImageURI(photoURI);
             Log.d("myTag", "1");
             new SendData().execute();
@@ -245,10 +252,36 @@ public class MainActivity extends AppCompatActivity {
                 Tiles a = new Tiles(tiles);
                 String txt = "";
                 for (int i = 0; i < tiles.length; i++) {
-                    txt = txt + ", " + tiles[i];
+                    if (tiles[i].equals("Haku"))
+                        tiles[i] = "белый дракон";
+                    else if (tiles[i].equals("Hatsu"))
+                        tiles[i] = "зеленый дракон";
+                    else if (tiles[i].equals("Chun"))
+                        tiles[i] = "красный дракон";
+                    else if (tiles[i].equals("Nan"))
+                        tiles[i] = "южный ветер";
+                    else if (tiles[i].equals("Pei"))
+                        tiles[i] = "северный ветер";
+                    else if (tiles[i].equals("Shaa"))
+                        tiles[i] = "западный ветер";
+                    else if (tiles[i].equals("Ton"))
+                        tiles[i] = "восточный ветер";
+                    else if(tiles[i].substring(0,3).equals("Sou"))
+                        tiles[i] = tiles[i].substring(3)+" соу";
+                    else if(tiles[i].substring(0,3).equals("Pin"))
+                        tiles[i] = tiles[i].substring(3)+" пин";
+                    else if(tiles[i].substring(0,3).equals("Man"))
+                        tiles[i] = tiles[i].substring(3)+" ман";
+                    if (i==0)
+                        txt = tiles[i];
+                    else
+                        txt = txt + ", " + tiles[i];
                 }
-                text2.setText("У вас есть следущие тайлы:\n" + txt);
-                text.setText("У вас есть следующие комбинации:\n" + a.toString());
+                if (!txt.equals(""))
+                    text.setText("У вас есть следущие тайлы:\n" + txt);
+                if (!a.toString().equals(""))
+                    text2.setText("У вас есть следующие комбинации:\n" + a.toString());
+                button.setEnabled(true);
             }
         }
     }class Tiles {
@@ -282,7 +315,7 @@ public class MainActivity extends AppCompatActivity {
                         sous.add(Integer.parseInt(String.valueOf(tiles[i].charAt(tiles[i].length() - 1))));
                     } else if (tiles[i].equals("Haku")) {
                         dragons.add(1);
-                    } else if (tiles[i].equals("Chan")) {
+                    } else if (tiles[i].equals("Chun")) {
                         dragons.add(2);
                     } else if (tiles[i].equals("Hatsu")) {
                         dragons.add(3);
@@ -308,9 +341,11 @@ public class MainActivity extends AppCompatActivity {
                     else return -1;
                 }
             };
-            pins.sort(comparator);
-            mans.sort(comparator);
-            sous.sort(comparator);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                pins.sort(comparator);
+                mans.sort(comparator);
+                sous.sort(comparator);
+            }
             findPons("mans",mans.toArray());
             findPons("pins",pins.toArray());
             findPons("sous",sous.toArray());

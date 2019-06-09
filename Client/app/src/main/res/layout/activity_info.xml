@@ -16,6 +16,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/colorButton"
+            android:textSize="18dp"
             android:text="@string/info"
             android:paddingLeft="15dp"
             android:paddingTop="15dp"

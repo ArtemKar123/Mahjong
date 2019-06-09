@@ -2,11 +2,11 @@ import numpy as np
 import cv2
 
 BKG_THRESH = 60
-CARD_THRESH = 30
+TILE_THRESH = 30
 
 DIFF_MAX = 300000
-CARD_MAX_AREA = 1000000
-CARD_MIN_AREA = 20000 #DO NOT TOUCH
+TILE_MAX_AREA = 1000000
+TILE_MIN_AREA = 20000 #DO NOT TOUCH
 count = 1
 
 font = cv2.FONT_HERSHEY_SIMPLEX
@@ -38,7 +38,7 @@ def load_patterns(filepath):
     train_tiles = []
     i = 0
 
-    for Rank in ['Chun (2)', 'Chun (3)', 'Chun (4)', 'Chun (5)', 'Chun (6)', 'Chun', 'Haku (2)', 'Haku', 'Hatsu (2)', 'Hatsu (3)', 'Hatsu (4)', 'Hatsu (5)', 'Hatsu (6)', 'Hatsu', 'Man1 (2)', 'Man1', 'Man11', 'Man12', 'Man13', 'Man2 (2)', 'Man2', 'Man21', 'Man22', 'Man23', 'Man24', 'Man25', 'Man26', 'Man3', 'Man31', 'Man32', 'Man33', 'Man34', 'Man4', 'Man41', 'Man42', 'Man43', 'Man44', 'Man5 (2)', 'Man5', 'Man51', 'Man52', 'Man53', 'Man54', 'Man55', 'Man6 (2)', 'Man6 (3)', 'Man6', 'Man61', 'Man62', 'Man63', 'Man64', 'Man65', 'Man66', 'Man7', 'Man71', 'Man72', 'Man73', 'Man74', 'Man75', 'Man76', 'Man8 (2)', 'Man8', 'Man81', 'Man82', 'Man83', 'Man84', 'Man85', 'Man86', 'Man9', 'Man91', 'Man92', 'Man93', 'Man94', 'Man95', 'Nan (2)', 'Nan (3)', 'Nan (4)', 'Nan (5)', 'Nan (6)', 'Nan', 'Nan1', 'Nan2', 'Nan3', 'Pei (2)', 'Pei (3)', 'Pei (4)', 'Pei (5)', 'Pei (6)', 'Pei', 'Pin1', 'Pin11', 'Pin12', 'Pin13', 'Pin14', 'Pin15', 'Pin16', 'Pin2 (2)', 'Pin2', 'Pin21', 'Pin22', 'Pin23', 'Pin24', 'Pin25', 'Pin3', 'Pin31', 'Pin32', 'Pin33', 'Pin4', 'Pin41', 'Pin42', 'Pin43', 'Pin44', 'Pin5', 'Pin51', 'Pin52', 'Pin53', 'Pin6', 'Pin61', 'Pin62', 'Pin63', 'Pin7', 'Pin71', 'Pin72', 'Pin73', 'Pin8', 'Pin81', 'Pin82', 'Pin83', 'Pin84', 'Pin85', 'Pin9', 'Pin91', 'Pin92', 'Pin93', 'Pin94', 'Pin95', 'Pin96', 'Shaa (2)', 'Shaa (3)', 'Shaa (4)', 'Shaa (5)', 'Shaa', 'Sou1 (2)', 'Sou1', 'Sou11', 'Sou12', 'Sou2', 'Sou21', 'Sou22', 'Sou23', 'Sou24', 'Sou3 (2)', 'Sou3 (3)', 'Sou3', 'Sou31', 'Sou32', 'Sou4 (2)', 'Sou4 (3)', 'Sou4 (4)', 'Sou4', 'Sou41', 'Sou42', 'Sou5 (2)', 'Sou5 (3)', 'Sou5', 'Sou51', 'Sou6 (2)', 'Sou6 (3)', 'Sou6', 'Sou61', 'Sou62', 'Sou7 (2)', 'Sou7 (3)', 'Sou7 (4)', 'Sou7 (5)', 'Sou7', 'Sou71', 'Sou8 (2)', 'Sou8', 'Sou81', 'Sou82', 'Sou9 (2)', 'Sou9 (3)', 'Sou9', 'Sou91', 'Sou92', 'Ton (2)', 'Ton (3)', 'Ton (4)', 'Ton (5)', 'Ton (6)', 'Ton']:
+    for Rank in ['Chun (2)', 'Chun (3)', 'Chun (4)', 'Chun (5)', 'Chun (6)', 'Chun', 'Haku (2)', 'Haku', 'Hatsu (2)', 'Hatsu (3)', 'Hatsu (4)', 'Hatsu (5)', 'Hatsu (6)', 'Hatsu', 'Man1 (2)', 'Man1', 'Man11', 'Man12', 'Man13', 'Man2 (2)', 'Man2', 'Man21', 'Man22', 'Man23', 'Man24', 'Man25', 'Man26', 'Man3', 'Man31', 'Man32', 'Man33', 'Man34', 'Man4', 'Man41', 'Man42', 'Man43', 'Man44', 'Man5 (2)', 'Man5', 'Man51', 'Man52', 'Man53', 'Man54', 'Man55', 'Man6 (2)', 'Man6 (3)', 'Man6', 'Man61', 'Man62', 'Man63', 'Man64', 'Man65', 'Man66', 'Man7 (2)', 'Man7', 'Man71', 'Man72', 'Man73', 'Man74', 'Man75', 'Man76', 'Man8 (2)', 'Man8', 'Man81', 'Man82', 'Man83', 'Man84', 'Man85', 'Man86', 'Man9', 'Man91', 'Man92', 'Man93', 'Man94', 'Man95', 'Nan (2)', 'Nan (3)', 'Nan (4)', 'Nan (5)', 'Nan (6)', 'Nan', 'Nan1', 'Nan2', 'Nan3', 'Pei (2)', 'Pei (3)', 'Pei (4)', 'Pei (5)', 'Pei (6)', 'Pei', 'Pin1', 'Pin11', 'Pin12', 'Pin13', 'Pin14', 'Pin15', 'Pin16', 'Pin2 (2)', 'Pin2', 'Pin21', 'Pin22', 'Pin23', 'Pin24', 'Pin25', 'Pin3', 'Pin31', 'Pin32', 'Pin33', 'Pin4', 'Pin41', 'Pin42', 'Pin43', 'Pin44', 'Pin5', 'Pin51', 'Pin52', 'Pin53', 'Pin6', 'Pin61', 'Pin62', 'Pin63', 'Pin7', 'Pin71', 'Pin72', 'Pin73', 'Pin8', 'Pin81', 'Pin82', 'Pin83', 'Pin84', 'Pin85', 'Pin9', 'Pin91', 'Pin92', 'Pin93', 'Pin94', 'Pin95', 'Pin96', 'Shaa (2)', 'Shaa (3)', 'Shaa (4)', 'Shaa (5)', 'Shaa', 'Sou1 (2)', 'Sou1', 'Sou11', 'Sou12', 'Sou2 (2)', 'Sou2', 'Sou21', 'Sou22', 'Sou23', 'Sou24', 'Sou3 (2)', 'Sou3 (3)', 'Sou3', 'Sou31', 'Sou32', 'Sou4 (2)', 'Sou4 (3)', 'Sou4 (4)', 'Sou4', 'Sou41', 'Sou42', 'Sou5 (2)', 'Sou5 (3)', 'Sou5', 'Sou51', 'Sou6 (2)', 'Sou6 (3)', 'Sou6', 'Sou61', 'Sou62', 'Sou7 (2)', 'Sou7 (3)', 'Sou7 (4)', 'Sou7 (5)', 'Sou7', 'Sou71', 'Sou8 (2)', 'Sou8 (3)', 'Sou8', 'Sou81', 'Sou82', 'Sou9 (2)', 'Sou9 (3)', 'Sou9 (4)', 'Sou9', 'Sou91', 'Sou92', 'Ton (2)', 'Ton (3)', 'Ton (4)', 'Ton (5)', 'Ton (6)', 'Ton']:
         train_tiles.append(Train())
         train_tiles[i].name = Rank
         filename = Rank + '.jpg'
@@ -77,7 +77,7 @@ def find_tiles(thresh_image):
 
     cnts_sort = []
     hier_sort = []
-    cnt_is_card = np.zeros(len(cnts),dtype=int)
+    cnt_is_tile = np.zeros(len(cnts),dtype=int)
 
     for i in index_sort:
         cnts_sort.append(cnts[i])
@@ -88,11 +88,11 @@ def find_tiles(thresh_image):
         peri = cv2.arcLength(cnts_sort[i],True)
         approx = cv2.approxPolyDP(cnts_sort[i],0.01*peri,True)
         #print(len(approx), size, hier_sort[i][3])
-        if ((size < CARD_MAX_AREA) and (size > CARD_MIN_AREA)
+        if ((size < TILE_MAX_AREA) and (size > TILE_MIN_AREA)
             and (hier_sort[i][3] == -1) and (len(approx) <= 16)):
-            cnt_is_card[i] = 1
+            cnt_is_tile[i] = 1
 
-    return cnts_sort, cnt_is_card
+    return cnts_sort, cnt_is_tile
 
 def preprocess_tile(contour, image, i):
 
